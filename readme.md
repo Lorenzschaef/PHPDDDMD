@@ -25,7 +25,7 @@ the **rulesets/dddrules.xml** file in your own ruleset definition.
         My custom rule set that checks my code...
     </description>
 
-    <!-- Import the entire unused code rule set -->
+    <!-- Import the DDD rule set -->
     <rule ref="vendor/lorenzschaef/phpdddmd/rulesets/dddrules.xml" />
 </ruleset>
 ```
@@ -62,4 +62,6 @@ standard DDD layers:
 
 You can change the list of layers by creating your own ruleset
 and specifying your own list of layers. Take a look at the original
-ruleset for reference.
+ruleset for reference. 
+The list must start with the innermost layer and the names are
+case sensitive.
