@@ -1,0 +1,33 @@
+{
+    "name": "lorenzschaef/phpdddmd",
+    "description": "Ruleset for php mess detector that detects invalid dependencies in a domain driven design architecture",
+    "keywords": [
+        "phpdddmd",
+        "phpmd",
+        "mess detector",
+        "ddd",
+        "domain driven design"
+    ],
+    "authors": [
+        {
+            "name": "Lorenz Schäfer",
+            "email": "lorenzschaef@gmail.com"
+        }
+    ],
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "require": {
+        "phpmd/phpmd": "^2.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lorenzschaef\\PHPDDDMD\\": [
+                "src/",
+                "tests/"
+            ]
+        }
+    }
+}
