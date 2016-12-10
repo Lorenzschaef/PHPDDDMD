@@ -4,9 +4,9 @@
 namespace Lorenzschaef\PHPDDDMD;
 
 
+use PDepend\Source\AST\AbstractASTClassOrInterface;
 use PDepend\Source\AST\ASTClass;
 use PHPMD\AbstractNode;
-use PHPMD\Node\ClassNode;
 use PHPMD\Rule\ClassAware;
 
 class NoLayerSkippingRule extends DDDBaseRule
@@ -25,7 +25,9 @@ implements ClassAware
         $definedLayers = $this->getDefinedLayers();
         $currentLayer = $this->extractLayerName($node->getNamespaceName(), $definedLayers);
 
-        $permittedLayers = $this->getLayerOfImplementedInterfaces($node, $definedLayers);
+        /** @var ASTClass $astNode */
+        $astNode = $node->getNode();
+        $permittedLayers = $this->getInheritedLayers($astNode, $definedLayers);
 
         $references = $node->findChildrenOfType('ClassOrInterfaceReference');
         foreach ($references as $reference) {
@@ -42,19 +44,30 @@ implements ClassAware
 
     /**
      * Returns an array of the Layers of the Interfaces that the node implements
+     * and the classes it extends
      *
-     * @param ClassNode $node
+     * @param AbstractASTClassOrInterface $node
      * @param string[] $definedLayers
      * @return array
      */
-    private function getLayerOfImplementedInterfaces(ClassNode $node, $definedLayers)
+    private function getInheritedLayers(AbstractASTClassOrInterface $node, $definedLayers)
     {
         $layers = [];
-        /** @var ASTClass $astNode */
-        $astNode = $node->getNode();
-        foreach ($astNode->getInterfaces() as $interface) {
-            $layers[] = $this->extractLayerName($interface->getNamespaceName(), $definedLayers);
+
+        foreach ($node->getInterfaces() as $interface) {
+            if ($layerName = $this->extractLayerName($interface->getNamespaceName(), $definedLayers)) {
+                $layers[] = $layerName;
+            }
+            $layers += $this->getInheritedLayers($interface, $definedLayers);
         }
+
+        if ($parentClass = $node->getParentClass()) {
+            if ($layerName = $this->extractLayerName($parentClass->getNamespaceName(), $definedLayers)) {
+                $layers[] = $layerName;
+            }
+            $layers += $this->getInheritedLayers($parentClass, $definedLayers);
+        }
+
         return array_unique($layers);
     }
 
@@ -69,6 +82,9 @@ implements ClassAware
      */
     private function isSkippingLayer($currentLayer, $referencedLayer, $definedLayers)
     {
+        if (empty($currentLayer) || empty($referencedLayer)){
+            return false;
+        }
         $currentLayerIndex = (int)array_search($currentLayer, $definedLayers);
         $calledLayerIndex = (int)array_search($referencedLayer, $definedLayers);
         return (($currentLayerIndex - $calledLayerIndex) > 1);

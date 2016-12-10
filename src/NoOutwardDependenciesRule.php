@@ -48,6 +48,9 @@ implements ClassAware, InterfaceAware
      */
     private function isOutwardDependency($currentLayer, $dependencyLayer, $definedLayers)
     {
+        if (empty($currentLayer) || empty($dependencyLayer)){
+            return false;
+        }
         $currentLayerIndex = (int)array_search($currentLayer, $definedLayers);
         $dependencyLayerIndex = (int)array_search($dependencyLayer, $definedLayers);
         return ($currentLayerIndex < $dependencyLayerIndex);

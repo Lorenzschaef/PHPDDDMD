@@ -6,7 +6,7 @@ namespace Lorenzschaef\PHPDDDMD;
 
 use PHPMD\TextUI\Command;
 
-class NoOutwardDependenciesRuleTest extends \PHPUnit_Framework_TestCase
+class DDDRuleSetTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testRule()

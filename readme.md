@@ -47,7 +47,7 @@ the Domain layer directly, skipping the Application layer, would
 be a violation of this rule.
 
 **There is an important exception to this rule:** Classes that
-implement an interface from another layer may directly interact
+inherit from another layer may directly interact
 with that layer. For example, a class *MysqlUserRepository* 
 (Infrastructure) that implements an interface *UserRepository* 
 (Domain) may directly work with Domain objects.
