@@ -1,15 +1,15 @@
-#PHPDDDMD
+# PHPDDDMD
 
 PHPDDDMD is a ruleset for the [PHP Mess Detector (PHPMD)](https://github.com/phpmd/phpmd) 
 that lets you detect invalid dependencies between the layers in a
 [Domain Driven Design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design) 
 architecture.
 
-##Installation
+## Installation
 
     composer require lorenzschaef/phpdddmd --dev
 
-##Usage
+## Usage
 
 See the [PHPMD Manual](https://github.com/phpmd/phpmd#command-line-usage) 
 for general usage instructions. To use the DDD rules, include
@@ -33,18 +33,18 @@ the **rulesets/dddrules.xml** file in your own ruleset definition.
 </ruleset>
 ```
 
-##Rules
+## Rules
 
 This ruleset contains two new rules for PHPMD.
 
-###No Outward Dependencies
+### No Outward Dependencies
 
 This rule detects dependencies to layers outside of the current
 one. For example, a class in the Domain layer using a class from 
 the Application or Infrastructure layers would be a violation 
 of this rule.
 
-###No Layer Skipping
+### No Layer Skipping
 
 This rule detects dependencies to a layer that is inside the
 current one, but not immediately adjacent. A class located in 
@@ -58,7 +58,7 @@ with that layer. For example, a class *MysqlUserRepository*
 (Infrastructure) that implements an interface *UserRepository* 
 (Domain) may directly work with Domain objects.
 
-##Customizing the Layer Names
+## Customizing the Layer Names
 
 Both rules accept a property parameter called "layers". If you 
 include the whole ruleset, they are automatically set to the three
